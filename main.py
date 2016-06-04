@@ -106,10 +106,63 @@ class ItemsForHire(App):
 
 
     def item_press(self, instance):
-        pass
+        item_count = 0
+        for line in self.list_item:
+            name, desc, price, hire = line.split(',')
+            if instance.text == name:
+                if self.root.ids.list_item.background_color == [0, 0.99, 0.99, 1]:
+                    self.root.ids.main_label.text = "{} ({}), ${:,.2f} is {}".format(name, desc, float(price), hire)
+
+                elif self.root.ids.hire_item.background_color == [0, 0.99, 0.99, 1]:
+                    part = self.items[item_count].split(",")
+                    if "in" in hire:
+                        if part[4] == "False":
+                            part[4] = "True"
+                            self.items[item_count] = "{},{},{},{},{}".format(str(part[0]).strip("[]").replace("'", ""), str(part[1]).strip("[]").replace("'", ""), str(part[2]).strip("[]").replace("'", ""), part[3].replace("'", ""), str(part[4]).strip("[]").replace("'", ""))
+                            self.root.ids.main_label.text = "Hiring: {} for ${:,.2f}.".format(name, float(price))
+                    else:
+                        self.root.ids.main_label.text = "Hiring nothing."
+
+                elif self.root.ids.return_item.background_color == [0, 0.99, 0.99, 1]:
+                    part = self.items[item_count].split(",")
+                    if "out" in hire:
+                        if part[4] == "False":
+                            part[4] = "True"
+                            self.items[item_count] = "{},{},{},{},{}".format(str(part[0]).strip("[]").replace("'", ""), str(part[1]).strip("[]").replace("'", ""), str(part[2]).strip("[]").replace("'", ""), part[3].replace("'", ""), str(part[4]).strip("[]").replace("'", ""))
+                            self.root.ids.main_label.text = "Returning: {}.".format(name)
+                    else:
+                        self.root.ids.main_label.text = "Returning nothing."
+            item_count += 1
 
     def confirming_items(self):
-        pass
+        with open("items.csv") as file:
+            item_lines_list = file.readlines()
+        for instance in self.root.ids.item_buttons.children:
+            for item_count in range(len(self.items)):
+                self.part = self.items[item_count].split(',')
+                if instance.text in self.part:
+                    if (self.part)[3] == 'in\n' and (self.part)[4] == 'True':
+                        (self.part)[3] = 'out\n'
+                        (self.part)[4] = "False"
+                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
+                        item_lines_list[item_count] = item_lines_list[item_count].replace('in', 'out')
+                        self.list_item.clear()
+                        for line in item_lines_list:
+                            self.list_item.store(line)
+                        with open("items.csv", "w") as file:
+                            file.writelines(item_lines_list)
+                        self.listing_items()
+                    elif (self.part) [3] == 'out\n' and (self.part)[4] == 'True':
+                        (self.part) [3] = 'in\n'
+                        (self.part) [4] = "False"
+                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
+                        item_lines_list[item_count] = item_lines_list[item_count].replace('out', 'in')
+                        self.list_item.clear()
+                        for line in item_lines_list:
+                            self.list_item.store(line)
+                        with open("items.csv", "w") as file:
+                            file.writelines(item_lines_list)
+                        self.listing_items()
 
     def adding_new_items(self):
         self.root.ids.item_buttons.clear_widgets()
