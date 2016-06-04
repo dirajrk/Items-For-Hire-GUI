@@ -10,7 +10,7 @@ Program Details: This program is used to hire or return items, also allows new i
 
 from kivy.app import App
 from kivy.lang import Builder
-
+from kivy.uix.button import Button
 
 from itemlist import ItemList
 
@@ -36,20 +36,56 @@ class ItemsForHire(App):
         return self.root
 
     def listing_items(self):
-        pass
+
+        self.root.ids.item_buttons.clear_widgets()
+        self.root.ids.list_item.background_color = (0, 0.99, 0.99, 1)
+        self.root.ids.hire_item.background_color = (1, 1, 1, 1)
+        self.root.ids.return_item.background_color = (1, 1, 1, 1)
+        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
+        self.root.ids.new_item.background_color = (1, 1, 1, 1)
+        item_count = 0
+        for line in self.list_item:
+            name, desc, price, hire = line.split(',')
+            if "in" in hire:
+                temp_button = Button(text = name, background_color=(0,1,0,1))
+            else:
+                temp_button = Button(text = name, background_color=(0.9,0.4,0.9,1))
+            temp_button.bind(on_press=self.item_press)
+            self.root.ids.item_buttons.add_widget(temp_button)
+            item_count += 1
 
 
     def hiring_items(self):
-        pass
+
+        self.root.ids.item_buttons.clear_widgets()
+        self.root.ids.list_item.background_color = (1, 1, 1, 1)
+        self.root.ids.hire_item.background_color = (0, 0.99, 0.99, 1)
+        self.root.ids.return_item.background_color = (1, 1, 1, 1)
+        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
+        self.root.ids.new_item.background_color = (1, 1, 1, 1)
 
     def returning_items(self):
+
+        self.root.ids.item_buttons.clear_widgets()
+        self.root.ids.list_item.background_color = (1, 1, 1, 1)
+        self.root.ids.hire_item.background_color = (1, 1, 1, 1)
+        self.root.ids.return_item.background_color = (0, 0.99, 0.99, 1)
+        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
+        self.root.ids.new_item.background_color = (1, 1, 1, 1)
+
+    def item_press(self):
         pass
 
     def confirming_items(self):
         pass
 
     def adding_new_items(self):
-        pass
+        self.root.ids.item_buttons.clear_widgets()
+        self.root.ids.list_item.background_color = (1, 1, 1, 1)
+        self.root.ids.hire_item.background_color = (1, 1, 1, 1)
+        self.root.ids.return_item.background_color = (1, 1, 1, 1)
+        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
+        self.root.ids.new_item.background_color = (0, 0.99, 0.99, 1)
 
 ItemsForHire().run()
 
