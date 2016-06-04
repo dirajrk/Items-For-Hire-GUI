@@ -14,6 +14,8 @@ from kivy.uix.button import Button
 
 from itemlist import ItemList
 
+__author__ = "Diraj Ravikumar"
+
 class ItemsForHire(App):
 
     def __init__(self, **kwargs):
@@ -57,23 +59,53 @@ class ItemsForHire(App):
 
     def hiring_items(self):
 
+        self.names = []
+        self.price = 0.00
+        for item_count, line in enumerate(self.items):
+            part = line.split(',')
+            part[4] = "False"
+            self.items[item_count] = "{},{},{},{},{}".format(str(part[0]).strip("[]").replace("'", ""), str(part[1]).strip("[]").replace("'", ""), str(part[2]).strip("[]").replace("'", ""), part[3].replace("'", ""), str(part[4]).strip("[]").replace("'", ""))
         self.root.ids.item_buttons.clear_widgets()
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (0, 0.99, 0.99, 1)
         self.root.ids.return_item.background_color = (1, 1, 1, 1)
         self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
         self.root.ids.new_item.background_color = (1, 1, 1, 1)
+        for line in self.list_item:
+            name, desc, price, hire = line.split(',')
+            if "in" in hire:
+                temp_button = Button(text = name, background_color=(0,1,0,1))
+            else:
+                temp_button = Button(text=name, background_color=(0.9, 0.4, 0.9, 1))
+            temp_button.bind(on_press=self.item_press)
+            self.root.ids.item_buttons.add_widget(temp_button)
+
 
     def returning_items(self):
 
+        self.names = []
+        for item_count, line in enumerate(self.items):
+            part = line.split(',')
+            part[4] = "False"
+            self.items[item_count] = "{},{},{},{},{}".format(str(part[0]).strip("[]").replace("'", ""), str(part[1]).strip("[]").replace("'", ""), str(part[2]).strip("[]").replace("'", ""), part[3].replace("'", ""), str(part[4]).strip("[]").replace("'", ""))
+        self.names = []
         self.root.ids.item_buttons.clear_widgets()
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
         self.root.ids.return_item.background_color = (0, 0.99, 0.99, 1)
         self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
         self.root.ids.new_item.background_color = (1, 1, 1, 1)
+        for line in self.list_item:
+            name, desc, price, hire = line.split(',')
+            if 'in' in hire:
+                temp_button = Button(text=name, background_color=(0, 1, 0, 1))
+            else:
+                temp_button = Button(text=name, background_color=(0.9, 0.4, 0.9, 1))
+            temp_button.bind(on_press=self.item_press)
+            self.root.ids.item_buttons.add_widget(temp_button)
 
-    def item_press(self):
+
+    def item_press(self, instance):
         pass
 
     def confirming_items(self):
