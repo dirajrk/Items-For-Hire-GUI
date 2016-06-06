@@ -62,8 +62,6 @@ class ItemsForHire(App):
         self.root.ids.list_item.background_color = (0, 0.99, 0.99, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
         self.root.ids.return_item.background_color = (1, 1, 1, 1)
-        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
-        self.root.ids.new_item.background_color = (1, 1, 1, 1)
         item_count = 0
         for line in self.list_item:
             name, desc, price, hire = line.split(',')
@@ -91,8 +89,6 @@ class ItemsForHire(App):
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (0, 0.99, 0.99, 1)
         self.root.ids.return_item.background_color = (1, 1, 1, 1)
-        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
-        self.root.ids.new_item.background_color = (1, 1, 1, 1)
         for line in self.list_item:
             name, desc, price, hire = line.split(',')
             if "in" in hire:
@@ -118,8 +114,6 @@ class ItemsForHire(App):
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
         self.root.ids.return_item.background_color = (0, 0.99, 0.99, 1)
-        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
-        self.root.ids.new_item.background_color = (1, 1, 1, 1)
         for line in self.list_item:
             name, desc, price, hire = line.split(',')
             if 'in' in hire:
@@ -208,8 +202,6 @@ class ItemsForHire(App):
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
         self.root.ids.return_item.background_color = (1, 1, 1, 1)
-        self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
-        self.root.ids.new_item.background_color = (0, 0.99, 0.99, 1)
 
         new_item = Builder.load_file('new_item.kv')
         self.pop_up = Popup(title="Add New Item",content=new_item)
