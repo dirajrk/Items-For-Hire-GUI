@@ -27,7 +27,10 @@ class ItemsForHire(App):
 # INITIALISER
 
     def __init__(self, **kwargs):
-
+        """
+        Acts as the constructor for ItemsForHire which loads the items.csv to read the files and stores them in
+        a list.
+        """
         super(ItemsForHire, self).__init__(**kwargs)
         self.list_item = ItemList()
         item_lines_list = open("items.csv","r+")
@@ -41,7 +44,9 @@ class ItemsForHire(App):
 # LOAD KIVY FILE
 
     def build(self):
-
+        """
+        Is used to set the title of the app and loads the Kivy file for listing, hiring, returning, confirming.
+        """
         self.title = "Equipment Hire"
         self.root = Builder.load_file('main.kv')
         self.listing_items()
@@ -50,7 +55,9 @@ class ItemsForHire(App):
 # LIST ITEMS
 
     def listing_items(self):
-
+        """
+        Is used to list items present in items.csv
+        """
         self.root.ids.item_buttons.clear_widgets()
         self.root.ids.list_item.background_color = (0, 0.99, 0.99, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
@@ -68,10 +75,12 @@ class ItemsForHire(App):
             self.root.ids.item_buttons.add_widget(temp_button)
             item_count += 1
 
-# HIRE ITEM
+# HIRE ITEMS
 
     def hiring_items(self):
-
+        """
+        Is used to hire an item if it is available
+        """
         self.names = []
         self.price = 0.00
         for item_count, line in enumerate(self.items):
@@ -96,7 +105,9 @@ class ItemsForHire(App):
 # RETURN ITEM
 
     def returning_items(self):
-
+        """
+        Is used to return an item that has been hired.
+        """
         self.names = []
         for item_count, line in enumerate(self.items):
             part = line.split(',')
@@ -121,6 +132,9 @@ class ItemsForHire(App):
 # CONFIRM ITEM TO BE HIRED OR RETURNED
 
     def confirming_items(self):
+        """
+        Is used to confirm an item when it is needed to be hired or returned
+        """
         with open("items.csv") as file:
             item_lines_list = file.readlines()
         for instance in self.root.ids.item_buttons.children:
@@ -151,6 +165,10 @@ class ItemsForHire(App):
                         self.listing_items()
 
     def item_press(self, instance):
+        """
+        This converts an item from hire to hired and also displays message if an item is available to hire inside the
+         label.
+        """
         item_count = 0
         for line in self.list_item:
             name, desc, price, hire = line.split(',')
@@ -182,6 +200,10 @@ class ItemsForHire(App):
 # ADDING A NEW ITEM
 
     def adding_new_items(self):
+        """
+        Is used to add a new item to the csv file and I decided to use a different Kivy file because I found it to be
+        messy when it was implemented on the main Kivy file.
+        """
         self.root.ids.item_buttons.clear_widgets()
         self.root.ids.list_item.background_color = (1, 1, 1, 1)
         self.root.ids.hire_item.background_color = (1, 1, 1, 1)
@@ -194,7 +216,9 @@ class ItemsForHire(App):
         self.pop_up.open()
 
     def saving_new(self, name, desc, price, label):
-
+        """
+        Is used to save new item to the csv and also does error checking incase the user enters funny values.
+        """
         def price_validity(price):
             try:
                 float(price)
@@ -217,13 +241,19 @@ class ItemsForHire(App):
             self.listing_items()
 
     def cancelling_new(self):
+        """
+        Is used when the user decides not to add a new item.
+        """
         self.pop_up.dismiss()
         self.listing_items()
 
     def on_stop(self):
+        """
+        Displays the number of items present in items.csv after the App is closed.
+        """
         num_lines = sum(1 for line in open('items.csv'))
         print("{} items saved to items.csv".format(num_lines))
 
-ItemsForHire().run()
+ItemsForHire().run() #Runs the main app.
 
 

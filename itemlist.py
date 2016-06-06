@@ -1,5 +1,7 @@
 class ItemList:
-
+    """
+    To store items present in items.csv as a list in this class.
+    """
     def __init__(self):
         self.list = []
 

@@ -14,34 +14,41 @@ BoxLayout:
                 size_hint_y: 0.5
 
             Button:
+                # Button for listing items present in items.csv.
                 id: list_item
                 text: 'List Items'
                 on_press: app.listing_items()
 
             Button:
+                # Button for hiring items present in items.csv.
                 id: hire_item
                 text: 'Hire Items'
                 on_press: app.hiring_items()
 
             Button:
+                # Button for returning items present in items.csv.
                 id: return_item
                 text: 'Return Items'
                 on_press: app.returning_items()
 
             Button:
+                # Button for confirming items to hire/return in items.csv.
                 id: confirm_item
                 text: 'Confirm'
                 on_press: app.confirming_items()
 
             Button:
+                # Button for adding a new item to items.csv which loads another Kivy file.
                 id: new_item
                 text: 'Add Item'
                 on_press: app.adding_new_items()
 
         GridLayout:
+            # Displays buttons with items present in items.csv
             id: item_buttons
             rows: 3
     Label:
+        # Label to guide the user and inform whether an item is available to hire/return.
         id: main_label
         size_hint_x: 1
         size_hint_y: None

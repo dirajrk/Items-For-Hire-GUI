@@ -4,25 +4,31 @@ BoxLayout:
         id: item_name
         text: "Item Name:"
     TextInput:
+        # Textfield for inserting item name.
         id: name_input
     Label:
         id: item_desc
         text: "Item Description:"
     TextInput:
+        # Textfield for inserting item description.
         id: desc_input
     Label:
         id: item_price
         text: "Price per Day:"
     TextInput:
+        # Textfield for inserting item price per day.
         id: price_input
     Button:
+        # Button for saving new item to items.csv.
         id: save_new
         text: "Save Item"
         on_release: app.saving_new(name_input.text, desc_input.text, price_input.text, new_item_label)
     Button:
+        # Button for cancelling in case the user doesn't want to add a new item.
         id: cancel_new
         text: "Cancel"
         on_press: app.cancelling_new()
     Label:
+        # Label to display welcome message and errors.
         id: new_item_label
         text: "Enter details for new item."
