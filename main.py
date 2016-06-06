@@ -8,18 +8,23 @@ Date: 08 June 2016
 Program Details: This program is used to hire or return items, also allows new items to be added with the use of Python and Kivy.
 """
 
+# IMPORTS KIVY MODULES TO RUN THE GUI
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
+# IMPORTS ITEMLIST CLASS
+
 from itemlist import ItemList
 
 __author__ = "Diraj Ravikumar"
 
-num_lines = sum(1 for line in open('items.csv'))
 
 class ItemsForHire(App):
+
+# INITIALISER
 
     def __init__(self, **kwargs):
 
@@ -33,12 +38,16 @@ class ItemsForHire(App):
         self.names = []
         self.price = 0.00
 
+# LOAD KIVY FILE
+
     def build(self):
 
         self.title = "Equipment Hire"
         self.root = Builder.load_file('main.kv')
         self.listing_items()
         return self.root
+
+# LIST ITEMS
 
     def listing_items(self):
 
@@ -59,6 +68,7 @@ class ItemsForHire(App):
             self.root.ids.item_buttons.add_widget(temp_button)
             item_count += 1
 
+# HIRE ITEM
 
     def hiring_items(self):
 
@@ -83,6 +93,7 @@ class ItemsForHire(App):
             temp_button.bind(on_press=self.item_press)
             self.root.ids.item_buttons.add_widget(temp_button)
 
+# RETURN ITEM
 
     def returning_items(self):
 
@@ -107,6 +118,37 @@ class ItemsForHire(App):
             temp_button.bind(on_press=self.item_press)
             self.root.ids.item_buttons.add_widget(temp_button)
 
+# CONFIRM ITEM TO BE HIRED OR RETURNED
+
+    def confirming_items(self):
+        with open("items.csv") as file:
+            item_lines_list = file.readlines()
+        for instance in self.root.ids.item_buttons.children:
+            for item_count in range(len(self.items)):
+                self.part = self.items[item_count].split(',')
+                if instance.text in self.part:
+                    if (self.part)[3] == 'in\n' and (self.part)[4] == 'True':
+                        (self.part)[3] = 'out\n'
+                        (self.part)[4] = "False"
+                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
+                        item_lines_list[item_count] = item_lines_list[item_count].replace('in', 'out')
+                        self.list_item.clear()
+                        for line in item_lines_list:
+                            self.list_item.store(line)
+                        with open("items.csv", "w") as file:
+                            file.writelines(item_lines_list)
+                        self.listing_items()
+                    elif (self.part)[3] == 'out\n' and (self.part)[4] == 'True':
+                        (self.part)[3] = 'in\n'
+                        (self.part)[4] = "False"
+                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
+                        item_lines_list[item_count] = item_lines_list[item_count].replace('out', 'in')
+                        self.list_item.clear()
+                        for line in item_lines_list:
+                            self.list_item.store(line)
+                        with open("items.csv", "w") as file:
+                            file.writelines(item_lines_list)
+                        self.listing_items()
 
     def item_press(self, instance):
         item_count = 0
@@ -137,35 +179,7 @@ class ItemsForHire(App):
                         self.root.ids.main_label.text = "Returning nothing."
             item_count += 1
 
-    def confirming_items(self):
-        with open("items.csv") as file:
-            item_lines_list = file.readlines()
-        for instance in self.root.ids.item_buttons.children:
-            for item_count in range(len(self.items)):
-                self.part = self.items[item_count].split(',')
-                if instance.text in self.part:
-                    if (self.part)[3] == 'in\n' and (self.part)[4] == 'True':
-                        (self.part)[3] = 'out\n'
-                        (self.part)[4] = "False"
-                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
-                        item_lines_list[item_count] = item_lines_list[item_count].replace('in', 'out')
-                        self.list_item.clear()
-                        for line in item_lines_list:
-                            self.list_item.store(line)
-                        with open("items.csv", "w") as file:
-                            file.writelines(item_lines_list)
-                        self.listing_items()
-                    elif (self.part) [3] == 'out\n' and (self.part)[4] == 'True':
-                        (self.part) [3] = 'in\n'
-                        (self.part) [4] = "False"
-                        self.items[item_count] = "{},{},{},{},{}".format(str(self.part[0]).strip("[]").replace("'", ""), str(self.part[1]).strip("[]").replace("'", ""), str(self.part[2]).strip("[]").replace("'", ""), self.part[3].replace("'", ""), str(self.part[4]).strip("[]").replace("'", ""))
-                        item_lines_list[item_count] = item_lines_list[item_count].replace('out', 'in')
-                        self.list_item.clear()
-                        for line in item_lines_list:
-                            self.list_item.store(line)
-                        with open("items.csv", "w") as file:
-                            file.writelines(item_lines_list)
-                        self.listing_items()
+# ADDING A NEW ITEM
 
     def adding_new_items(self):
         self.root.ids.item_buttons.clear_widgets()
@@ -199,7 +213,7 @@ class ItemsForHire(App):
             with open("items.csv", "a") as file:
                 file.writelines(item_new)
             self.list_item.store(item_new)
-            self.cancel_new()
+            self.cancelling_new()
             self.listing_items()
 
     def cancelling_new(self):
@@ -207,6 +221,7 @@ class ItemsForHire(App):
         self.listing_items()
 
     def on_stop(self):
+        num_lines = sum(1 for line in open('items.csv'))
         print("{} items saved to items.csv".format(num_lines))
 
 ItemsForHire().run()
