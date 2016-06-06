@@ -1,0 +1,28 @@
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        id: item_name
+        text: "Item Name:"
+    TextInput:
+        id: name_input
+    Label:
+        id: item_desc
+        text: "Item Description:"
+    TextInput:
+        id: desc_input
+    Label:
+        id: item_price
+        text: "Price per Day:"
+    TextInput:
+        id: price_input
+    Button:
+        id: save_new
+        text: "Save Item"
+        on_release: app.saving_new(name_input.text, desc_input.text, price_input.text, new_item_label)
+    Button:
+        id: cancel_new
+        text: "Cancel"
+        on_press: app.cancelling_new()
+    Label:
+        id: new_item_label
+        text: "Enter details for new item."

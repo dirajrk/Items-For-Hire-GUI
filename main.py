@@ -11,10 +11,13 @@ Program Details: This program is used to hire or return items, also allows new i
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 
 from itemlist import ItemList
 
 __author__ = "Diraj Ravikumar"
+
+num_lines = sum(1 for line in open('items.csv'))
 
 class ItemsForHire(App):
 
@@ -51,7 +54,7 @@ class ItemsForHire(App):
             if "in" in hire:
                 temp_button = Button(text = name, background_color=(0,1,0,1))
             else:
-                temp_button = Button(text = name, background_color=(0.9,0.4,0.9,1))
+                temp_button = Button(text = name, background_color=(1,0,0,1))
             temp_button.bind(on_press=self.item_press)
             self.root.ids.item_buttons.add_widget(temp_button)
             item_count += 1
@@ -76,7 +79,7 @@ class ItemsForHire(App):
             if "in" in hire:
                 temp_button = Button(text = name, background_color=(0,1,0,1))
             else:
-                temp_button = Button(text=name, background_color=(0.9, 0.4, 0.9, 1))
+                temp_button = Button(text=name, background_color=(1, 0, 0, 1))
             temp_button.bind(on_press=self.item_press)
             self.root.ids.item_buttons.add_widget(temp_button)
 
@@ -100,7 +103,7 @@ class ItemsForHire(App):
             if 'in' in hire:
                 temp_button = Button(text=name, background_color=(0, 1, 0, 1))
             else:
-                temp_button = Button(text=name, background_color=(0.9, 0.4, 0.9, 1))
+                temp_button = Button(text=name, background_color=(1, 0, 0, 1))
             temp_button.bind(on_press=self.item_press)
             self.root.ids.item_buttons.add_widget(temp_button)
 
@@ -171,6 +174,40 @@ class ItemsForHire(App):
         self.root.ids.return_item.background_color = (1, 1, 1, 1)
         self.root.ids.confirm_item.background_color = (1, 1, 1, 1)
         self.root.ids.new_item.background_color = (0, 0.99, 0.99, 1)
+
+        new_item = Builder.load_file('new_item.kv')
+        self.pop_up = Popup(title="Add New Item",content=new_item)
+        self.pop_up.open()
+
+    def saving_new(self, name, desc, price, label):
+
+        def price_validity(price):
+            try:
+                float(price)
+                return True
+            except ValueError:
+                return False
+
+        if len(name.strip()) == 0 or len(desc.strip()) == 0 or len(price.strip()) == 0:
+            label.text = "All fields must be completed"
+        elif price_validity(price) == False:
+            label.text = "Price must be valid number"
+        elif price_validity(price) == True and float(price) < 0:
+            label.text = "Price cannot be negative"
+        else:
+            item_new = "{},{},{},in".format(name, desc, float(price))
+            with open("items.csv", "a") as file:
+                file.writelines(item_new)
+            self.list_item.store(item_new)
+            self.cancel_new()
+            self.listing_items()
+
+    def cancelling_new(self):
+        self.pop_up.dismiss()
+        self.listing_items()
+
+    def on_stop(self):
+        print("{} items saved to items.csv".format(num_lines))
 
 ItemsForHire().run()
 
