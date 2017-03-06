@@ -1,7 +1,7 @@
 """
 Name: Diraj Ravikumar
 Student ID: 13255244
-GitHub Link: https://github.com/dirajk/DirajRavikumarA2
+GitHub Link: https://github.com/dirajk/Items-For-Hire-GUI
 
 
 Date: 08 June 2016
